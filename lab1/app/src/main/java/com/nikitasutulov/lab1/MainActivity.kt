@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTaskText(): String {
-        val taskEditText = findViewById<EditText>(R.id.taskEditText)!!
+        val taskEditText = findViewById<EditText>(R.id.taskEditText)
         val text = taskEditText.text.toString()
         if (text.isBlank()) {
             Toast.makeText(this, "Будь ласка, введіть текст для Вашого завдання", Toast.LENGTH_SHORT).show()
@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTaskComplexity(): String {
-        val complexityRG = findViewById<RadioGroup>(R.id.complexityRadioGroup)!!
+        val complexityRG = findViewById<RadioGroup>(R.id.complexityRadioGroup)
         val chosenComplexityRadioId = complexityRG.checkedRadioButtonId
-        if (chosenComplexityRadioId == null) {
+        if (chosenComplexityRadioId == -1) {
             Toast.makeText(this, "Будь ласка, оберіть складність для Вашого завдання", Toast.LENGTH_SHORT).show()
             throw IllegalStateException()
         }
@@ -59,9 +59,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTaskType(): String {
-        val typeRG = findViewById<RadioGroup>(R.id.typeRadioGroup)!!
+        val typeRG = findViewById<RadioGroup>(R.id.typeRadioGroup)
         val chosenTypeRadioId = typeRG.checkedRadioButtonId
-        if (chosenTypeRadioId == null) {
+        if (chosenTypeRadioId == -1) {
             Toast.makeText(this, "Будь ласка, оберіть тип для Вашого завдання", Toast.LENGTH_SHORT).show()
             throw IllegalStateException()
         }

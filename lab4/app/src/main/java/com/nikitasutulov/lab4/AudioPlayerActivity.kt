@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
@@ -20,6 +21,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     ) { }
 
     private lateinit var mediaPlayer: MediaPlayer
+    private val songNameTV: TextView by lazy { findViewById(R.id.songNameTV) }
 
     private var isAudioPaused = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +36,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                     .build()
             )
             it.setOnCompletionListener {
+                isAudioPaused = true
                 findViewById<ImageButton>(R.id.playPauseButton).setImageResource(R.drawable.baseline_play_arrow_24)
             }
         }
@@ -62,6 +65,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         }
         mediaPlayer.prepare()
+        songNameTV.text = link
         setButtonsOnClickListeners()
     }
 

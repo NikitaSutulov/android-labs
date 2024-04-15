@@ -1,24 +1,18 @@
 package com.nikitasutulov.lab5
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -29,6 +23,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
     private var isRunning = false
     private var totalStepsCount = 0
     private var previousTotalStepsCount = 0
+    private var isGoalReached = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +39,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
 
         findViewById<View>(R.id.resetButton).setOnClickListener(this)
         loadStepsCount()
+
+        findViewById<ProgressBar>(R.id.progressBar).max = GOAL_STEPS_COUNT
+        findViewById<ProgressBar>(R.id.progressBar).progress = totalStepsCount - previousTotalStepsCount
     }
 
     override fun onResume() {
@@ -70,8 +68,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
             Log.d("steps", sensorEvent!!.values[0].toString())
             totalStepsCount = sensorEvent!!.values[0].toInt()
             val currentStepsCount = totalStepsCount - previousTotalStepsCount
-            findViewById<TextView>(R.id.textView).text = "Total steps: $currentStepsCount of 1000"
+            findViewById<TextView>(R.id.textView).text = "Total steps: $currentStepsCount of $GOAL_STEPS_COUNT"
             findViewById<ProgressBar>(R.id.progressBar).progress = currentStepsCount
+
+            if (currentStepsCount >= GOAL_STEPS_COUNT && !isGoalReached) {
+                Log.d("steps", "Goal reached!")
+                Toast.makeText(this, "Congratulations! You've reached your goal!", Toast.LENGTH_LONG).show()
+                isGoalReached = true
+            }
         }
     }
 
@@ -82,8 +86,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
         when (p0!!.id) {
             R.id.resetButton -> {
                 previousTotalStepsCount = totalStepsCount
-                findViewById<TextView>(R.id.textView).text = "Total steps: 0 of 1000"
+                findViewById<TextView>(R.id.textView).text = "Total steps: 0 of $GOAL_STEPS_COUNT"
                 findViewById<ProgressBar>(R.id.progressBar).progress = 0
+                isGoalReached = false
             }
         }
     }
@@ -98,5 +103,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
     private fun loadStepsCount() {
         val sharedPreferences = getSharedPreferences("stepsPrefs", MODE_PRIVATE)
         previousTotalStepsCount = sharedPreferences.getInt("stepsCount", 0)
+    }
+
+    companion object {
+        const val GOAL_STEPS_COUNT = 10
     }
 }

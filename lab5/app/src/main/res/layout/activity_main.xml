@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Total steps: 0 of 1000"
+        tools:text="Total steps: 0 of 1000"
         android:textSize="20sp"/>
 
     <ProgressBar
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:max="1000"
+        tools:max="1000"
         tools:progress="500" />
 
     <Button

@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, OnClickListener {
         if (stepCounterSensor == null) {
             Toast.makeText(this, "No sensor detected on this device", Toast.LENGTH_SHORT).show()
         } else {
-            sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_UI
-            )
+            sensorManager.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
     }
 
